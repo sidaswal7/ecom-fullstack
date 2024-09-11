@@ -1,22 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+    const navigate = useNavigate();
     const [userInfo, setUserInfo] = useState({
         username:"",
         email:"",
         password:""
     });
-    
-    const handleForm = (e)=>{
+    useEffect(()=>{
+      const auth = localStorage.getItem("user");
+      if(auth){
+        navigate("/products")
+      }
+    },[])
+    const handleForm = async (e)=>{
+      try{
         e.preventDefault();
-        let userData = userInfo
-        console.log(userData);
+        let userData = userInfo;
+        let response = await fetch(`http://localhost:4000/signup`,{
+          method:"POST",  
+          body: JSON.stringify(userData),
+          headers:{
+            "Content-Type": "application/json"
+          }
+        }
+      )
+      setUserInfo({
+        username:"",
+        email:"",
+        password:""
+    })
+      let data = await response.json()
+      console.log("data",data);
+      localStorage.setItem("user", JSON.stringify(data))
+      navigate("/products");
+      }catch(err){
+        console.log(err)
+      }
+        
     }
   return (
     <div>
       <h1 className="text-center text-3xl font-bold my-8">Register User</h1>
       <div className="flex justify-center items-center">
-        <form className="py-5 px-4 rounded-md shadow-lg mb-20" onSubmit={handleForm}>
+        <form className="py-5 px-6 rounded-md shadow-lg mb-20" onSubmit={handleForm}>
           <div className="my-2">
             <label htmlFor="username" className="font-semibold text-slate-800">
               Username:{" "}
@@ -60,7 +88,7 @@ const SignUp = () => {
             />
           </div>
           <div className="flex justify-center my-2">
-            <button className="w-full px-2 py-1 bg-orange-500 text-white hover:bg-orange-600 my-2 rounded shadow-md" type="submit">
+            <button className="w-full px-2 py-1 bg-orange-500 text-white hover:bg-orange-600 my-2 rounded shadow-md mt-4" type="submit">
               Sign Up
             </button>
           </div>
