@@ -4,6 +4,8 @@ import { Route, Routes } from "react-router-dom";
 import SignUp from "./components/SignUp";
 import Privatecomponent from "./components/Privatecomponent";
 import Login from "./components/Login";
+import AddProduct from "./components/AddProduct";
+import ProductList from "./components/ProductList";
 
 function App() {
   const auth = localStorage.getItem("user");
@@ -12,8 +14,8 @@ function App() {
       <Navbar/>
       <Routes>
         <Route element={<Privatecomponent/>}>
-        <Route path="/products" element={<h1 className="text-center font-bold text-4xl">Product List</h1>}/>
-        <Route path="/add" element={<h1 className="text-center font-bold text-4xl">Add</h1>}/>
+        <Route path="/products" element={<ProductList/>}/>
+        <Route path="/add" element={<AddProduct/>}/>
         <Route path="/update" element={<h1 className="text-center font-bold text-4xl">Update</h1>}/>
         <Route path="/logout" element={<h1 className="text-center font-bold text-4xl">Logoutt</h1>}/>
         <Route path="/profile" element={<h1 className="text-center font-bold text-4xl">Profile Page</h1>}/>
